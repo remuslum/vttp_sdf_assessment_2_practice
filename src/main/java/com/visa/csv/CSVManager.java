@@ -26,8 +26,10 @@ public class CSVManager {
         String[] headers = br.readLine().split(",");
         String line = "";
         List<Map<String, String>> playStoreData = new ArrayList<>();
+        int numberOfLines = 0;
 
         while ((line = br.readLine()) != null) {
+            numberOfLines++;
             String cleanedLine = cleaner.cleanLine(line);
             Map<String, String> temp = new HashMap<>();
             String[] content = cleanedLine.split(",");
@@ -50,17 +52,8 @@ public class CSVManager {
         br.close();
 
         String[] relevantColumns = {"App", "Category", "Rating"};
-        return removeNullRatings(extractRelevantColumns(relevantColumns, playStoreData));
-    }
-
-    public List<Map<String, String>> removeNullRatings(List<Map<String, String>> playStoreData) {
-        List<Map<String, String>> finalPlayStoreData = new ArrayList<>();
-        for (Map<String, String> appData:playStoreData) {
-            if(!appData.get("Rating").equals("NaN")) {
-                finalPlayStoreData.add(appData);
-            }
-        }
-        return finalPlayStoreData;
+        System.out.printf("Number of Lines Read: %d \n",numberOfLines);
+        return extractRelevantColumns(relevantColumns, playStoreData);
     }
 
     public List<Map<String, String>> extractRelevantColumns(String[] columns, List<Map<String, String>> playStoreData) {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.visa.csv.CSVManager;
+import com.visa.statistics.GenerateStatistics;
 import com.visa.statistics.Statistics;
 
 /**
@@ -18,8 +19,9 @@ public class App
         
         List<Map<String,String>> playStoreData = csvManager.getCSVData();
         List<String> categories = csvManager.categoryList(playStoreData);
-        Statistics statistics = new Statistics(playStoreData, categories);
-
-        System.out.println(statistics.getHighestRatedApp("EVENTS"));
+        for(String category:categories) {
+            GenerateStatistics generateStatistics = new GenerateStatistics(new Statistics(playStoreData, category));
+            generateStatistics.generateStats();
+        }
     }
 }
